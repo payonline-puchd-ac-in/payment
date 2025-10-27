@@ -5,15 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PU Online Payment Portal</title>
     <style>
-        /* * --- EXACT DUPE STYLES v2 ---
-         * Updated with user-provided icons and button styles.
+        /* * --- EXACT DUPE STYLES v3 ---
+         * Footer is now fixed to the bottom.
          */
         
         /* --- Base & Body --- */
         :root {
             --pu-blue: #004a99;
             --pu-orange: #e67e22;
-            --btn-blue: #2980b9; /* This is the exact blue from the button image */
+            --btn-blue: #2980b9; 
             --text-dark: #333;
             --text-light: #555;
             --border-color: #eee;
@@ -27,6 +27,8 @@
             background-color: var(--bg-light);
             color: var(--text-dark);
             -webkit-font-smoothing: antialiased;
+            /* NEW: Add padding to the bottom to avoid overlap with fixed footer */
+            padding-bottom: 80px; 
         }
 
         /* --- Header --- */
@@ -45,7 +47,6 @@
             font-weight: 500;
         }
         
-        /* Styles for header icons */
         header .icons {
             font-size: 1.5rem;
             font-weight: bold;
@@ -54,8 +55,7 @@
             margin-left: 0;
         }
         header .icons svg {
-            /* Styles for the new top-right icon */
-            width: 1.4rem; /* 22.4px */
+            width: 1.4rem;
             height: 1.4rem;
             vertical-align: middle;
             opacity: 0.9;
@@ -75,7 +75,7 @@
         }
 
         h1 {
-            font-size: 1.75rem; /* 28px */
+            font-size: 1.75rem;
             color: var(--text-dark);
             margin-top: 0;
             margin-bottom: 12px;
@@ -83,7 +83,7 @@
         }
 
         h2 {
-            font-size: 0.875rem; /* 14px */
+            font-size: 0.875rem;
             color: var(--pu-orange);
             font-weight: 700;
             border-bottom: 2px solid #f0f0f0;
@@ -147,10 +147,10 @@
             background-color: var(--btn-blue);
             color: white;
             border: none;
-            border-radius: 10px; /* Rounded rectangle, not pill */
+            border-radius: 10px;
             padding: 8px 16px;
             font-size: 0.9rem;
-            font-weight: bold; /* Bolder text to match image */
+            font-weight: bold;
             cursor: pointer;
             text-align: center;
             min-width: 90px;
@@ -158,12 +158,12 @@
         }
         
         .btn-action svg {
-            width: 1rem; /* 16px */
-            height: 1rem; /* 16px */
+            width: 1rem;
+            height: 1rem;
             margin-right: 6px;
-            fill: none; /* Outlines only */
+            fill: none;
             stroke: currentColor;
-            stroke-width: 2.5; /* Thicker lines to match image */
+            stroke-width: 2.5;
             stroke-linecap: round;
             stroke-linejoin: round;
             vertical-align: middle;
@@ -172,14 +172,20 @@
              vertical-align: middle;
         }
 
-        /* --- Footer --- */
+        /* --- Footer (NEW STYLES) --- */
         footer {
+            position: fixed; /* Keep it fixed at the bottom */
+            bottom: 0;       /* Align to the bottom */
+            left: 0;         /* Align to the left */
+            width: 100%;     /* Span full width */
+            
             text-align: center;
-            padding: 25px 20px;
+            padding: 25px 0; /* Vertical padding */
             font-size: 0.8rem;
             color: #777;
             border-top: 1px solid #e0e0e0;
-            margin-top: 20px;
+            background-color: var(--bg-light); /* Add background to prevent content showing through */
+            z-index: 50; /* Ensure it's on top of other content */
         }
 
         /* --- MODAL (Transaction Details) --- */
@@ -414,6 +420,12 @@
                                 </button>
                             </td>
                         </tr>
+                        
+                        <tr><td>6.</td><td>15-Jul-2025</td><td>512300</td><td>&#8377; 1200.00</td><td>Successful</td><td class="actions-cell"><button class="btn-action">View</button></td></tr>
+                        <tr><td>7.</td><td>12-Jul-2025</td><td>512200</td><td>&#8377; 500.00</td><td>Successful</td><td class="actions-cell"><button class="btn-action">View</button></td></tr>
+                        <tr><td>8.</td><td>10-Jul-2025</td><td>512100</td><td>&#8377; 8000.00</td><td>Successful</td><td class="actions-cell"><button class="btn-action">View</button></td></tr>
+                        <tr><td>9.</td><td>05-Jul-2025</td><td>512000</td><td>&#8377; 4120.00</td><td>Successful</td><td class="actions-cell"><button class="btn-action">View</button></td></tr>
+                        
                     </tbody>
                 </table>
             </div>
@@ -527,3 +539,4 @@
 
 </body>
 </html>
+
