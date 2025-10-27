@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PU Online Payment Portal</title>
+    <style>
+        /* --- Basic Setup --- */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            margin: 0;
+            background-color: #f4f7f6;
+            color: #333;
+        }
+
+        /* --- Header --- */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            background-color: #004a99; /* Color from image */
+            color: white;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        header .title {
+            font-size: 1.1em;
+            font-weight: 500;
+        }
+
+        header .icons {
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+
+        header .icons span {
+            margin-left: 15px;
+        }
+
+        /* --- Main Content --- */
+        main {
+            padding: 20px;
+        }
+
+        .register-container {
+            background-color: #ffffff;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+            padding: 20px;
+        }
+
+        h1 {
+            font-size: 1.8em;
+            color: #333;
+            margin-top: 0;
+            font-weight: 500;
+        }
+
+        h2 {
+            font-size: 0.9em;
+            color: #e67e22; /* Orange color from image */
+            font-weight: 700;
+            border-bottom: 2px solid #f0f0f0;
+            padding-bottom: 15px;
+            margin-bottom: 0;
+        }
+
+        /* --- The Swipeable Table --- */
+        .table-wrapper {
+            overflow-x: auto; /* This creates the horizontal swipe/scroll */
+            margin-top: 20px;
+        }
+
+        table {
+            width: 100%;
+            min-width: 600px; /* Force horizontal scroll on small screens */
+            border-collapse: separate;
+            border-spacing: 0;
+        }
+
+        th, td {
+            padding: 15px 10px;
+            text-align: left;
+            vertical-align: top;
+            border-bottom: 1px solid #eee;
+        }
+        
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        th {
+            color: #555;
+            font-weight: 600;
+            font-size: 0.9em;
+        }
+
+        td {
+            font-size: 0.95em;
+        }
+
+        td:nth-child(1) { /* # */
+            font-weight: 600;
+            color: #555;
+        }
+        
+        td:nth-child(4) { /* Amount */
+            font-weight: 600;
+            color: #222;
+        }
+
+        td:nth-child(5) { /* Status */
+            color: #27ae60;
+            font-weight: 600;
+        }
+
+        /* --- Action Buttons --- */
+        .actions-cell {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .btn-view, .btn-print {
+            background-color: #2980b9; /* Blue from image */
+            color: white;
+            border: none;
+            border-radius: 20px;
+            padding: 8px 15px;
+            font-size: 0.9em;
+            font-weight: 600;
+            cursor: pointer;
+            text-align: center;
+            min-width: 80px;
+        }
+
+        /* --- Footer --- */
+        footer {
+            text-align: center;
+            padding: 20px;
+            font-size: 0.8em;
+            color: #777;
+            border-top: 1px solid #e0e0e0;
+            margin-top: 20px;
+        }
+
+        /* --- Modal (Details View) --- */
+        .modal {
+            display: none; 
+            position: fixed; 
+            z-index: 100; 
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%; 
+            overflow: auto; 
+            background-color: #ffffff;
+        }
+
+        .modal-header {
+            display: flex;
+            align-items: center;
+            padding: 10px 15px;
+            background-color: #f9f9f9;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .modal-back-btn {
+            font-size: 1.8em;
+            font-weight: bold;
+            color: #004a99;
+            cursor: pointer;
+            padding: 5px 10px 5px 0;
+        }
+
+        .modal-title {
+            font-size: 1.3em;
+            font-weight: 500;
+        }
+
+        .modal-body {
+            padding: 0;
+        }
+
+        .modal-body h2 {
+            padding: 10px 20px;
+            margin: 0;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .details-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .details-table th, .details-table td {
+            border: 1px solid #eee;
+            padding: 10px;
+            text-align: left;
+            font-size: 0.9em;
+        }
+        .details-table th {
+            background-color: #f9f9f9;
+            font-weight: 600;
+            width: 30%;
+        }
+
+        .details-list {
+            padding: 20px;
+        }
+        .detail-item {
+            background-color: #e6f7ff; /* Light blue from video */
+            border: 1px solid #b3e0ff;
+            border-radius: 4px;
+            padding: 12px 15px;
+            margin-bottom: 12px;
+            font-size: 0.95em;
+        }
+        .detail-item strong {
+            display: block;
+            color: #555;
+            font-size: 0.85em;
+            margin-bottom: 4px;
+        }
+        
+        .detail-item.status-success {
+             background-color: #e8f5e9; /* Light green */
+             border-color: #c8e6c9;
+             font-weight: 600;
+             color: #2e7d32;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="icons">
+            <span>&#9776;</span> </div>
+        <div class="title">PU Online Payment Portal</div>
+        <div class="icons">
+            <span>&#128100;</span> </div>
+    </header>
+
+    <main>
+        <div class="register-container">
+            <h1>Transaction Register</h1>
+            <h2>RITIKA: TRANSACTION REGISTER</h2>
+
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Date</th>
+                            <th>Trans. ID</th>
+                            <th>Amount</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1.</td>
+                            <td>08-Oct-2025</td>
+                            <td>560381</td>
+                            <td>&#8377; 4140.00</td>
+                            <td>Successful</td>
+                            <td class="actions-cell">
+                                <button class="btn-view" id="view-new-entry">View</button>
+                                <button class="btn-print" id="print-new-entry">Print</button>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>2.</td>
+                            <td>08-Oct-2025</td>
+                            <td>560381</td>
+                            <td>&#8377; 4120.00</td>
+                            <td>Successful</td>
+                            <td class="actions-cell">
+                                <button class="btn-view">View</button>
+                                <button class="btn-print">Print</button>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>3.</td>
+                            <td>21-Aug-2025</td>
+                            <td>540093</td>
+                            <td>&#8377; 4430.00</td>
+                            <td>Successful</td>
+                            <td class="actions-cell">
+                                <button class="btn-view">View</button>
+                                <button class="btn-print">Print</button>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>4.</td>
+                            <td>24-Jul-2025</td>
+                            <td>520428</td>
+                            <td>&#8377; 85845.00</td>
+                            <td>Successful</td>
+                            <td class="actions-cell">
+                                <button class="btn-view">View</button>
+                                <button class="btn-print">Print</button>
+                            </td>
+                        </tr>
+                        
+                        <tr>
+                            <td>5.</td>
+                            <td>17-Jul-2025</td>
+                            <td>512360</td>
+                            <td>&#8377; 3950.00</td>
+                            <td>Successful</td>
+                            <td class="actions-cell">
+                                <button class="btn-view">View</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        &copy; 2025 Dr. A. P. J. Abdul Kalam Computer Centre,
+        Panjab University. All rights reserved.
+    </footer>
+
+    <div id="details-modal" class="modal">
+        <div class="modal-header">
+            <span class="modal-back-btn" id="modal-back-btn">&larr;</span>
+        </div>
+        
+        <div class="modal-body">
+            <h1>Transaction Details</h1>
+            <h2>RITIKA: TRANSACTION DETAILS</h2>
+
+            <table class="details-table">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Fee Code</th>
+                        <th>Fee Details</th>
+                        <th>Description</th>
+                        <th>Amount</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>H0670</td>
+                        <td>GIRLS HOSTEL NO.9 SECTRO-25, (AMRITA PRITAM) - HOSTEL RENT</td>
+                        <td>Ritika, Room no. 602, October Rent</td>
+                        <td>&#8377; 4140.00</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="details-list">
+                <div class="detail-item">
+                    <strong>Transaction ID:</strong>
+                    560381 </div>
+                <div class="detail-item">
+                    <strong>Transaction Date:</strong>
+                    08-Oct-2025 </div>
+                <div class="detail-item">
+                    <strong>Transaction Amount:</strong>
+                    &#8377; 4140.00 </div>
+                <div class="detail-item status-success">
+                    <strong>Online Payment Status:</strong>
+                    Successful [ Executed on: 08-Oct-2025 ]
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+        // --- JavaScript for Modal and Print ---
+
+        // Get the elements
+        const modal = document.getElementById('details-modal');
+        const viewBtn = document.getElementById('view-new-entry');
+        const backBtn = document.getElementById('modal-back-btn');
+        const printBtn = document.getElementById('print-new-entry');
+
+        // Show the modal when "View" is clicked
+        viewBtn.onclick = function() {
+            modal.style.display = 'block';
+        }
+
+        // Hide the modal when "Back" is clicked
+        backBtn.onclick = function() {
+            modal.style.display = 'none';
+        }
+
+        // Handle the "Print" button click
+        printBtn.onclick = function() {
+            // This creates a temporary link to the PDF file and "clicks" it to start the download.
+            // This requires the 'PSlip-081025-560381.pdf' file to be in the same folder.
+            const a = document.createElement('a');
+            a.href = 'PSlip-081025-560381.pdf';
+            a.download = 'PSlip-081025-560381.pdf'; // This sets the name of the file to be downloaded
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+        }
+    </script>
+
+</body>
+</html>
