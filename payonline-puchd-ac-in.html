@@ -5,17 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PU Online Payment Portal</title>
     <style>
-        /* * --- EXACT DUPE STYLES ---
-         * Based on screenshots and video.
-         * Font: Standard system UI font (matches images).
-         * Colors: PU Blue (#004a99), PU Orange (#e67e22), Button Blue (#2980b9).
+        /* * --- EXACT DUPE STYLES v2 ---
+         * Updated with user-provided icons and button styles.
          */
         
         /* --- Base & Body --- */
         :root {
             --pu-blue: #004a99;
             --pu-orange: #e67e22;
-            --btn-blue: #2980b9;
+            --btn-blue: #2980b9; /* This is the exact blue from the button image */
             --text-dark: #333;
             --text-light: #555;
             --border-color: #eee;
@@ -46,14 +44,20 @@
             font-size: 1.1rem;
             font-weight: 500;
         }
-
+        
+        /* Styles for header icons */
         header .icons {
             font-size: 1.5rem;
             font-weight: bold;
         }
-
-        header .icons span {
-            margin-left: 15px;
+        header .icons.hamburger span {
+            margin-left: 0;
+        }
+        header .icons svg {
+            /* Styles for the new top-right icon */
+            width: 1.4rem; /* 22.4px */
+            height: 1.4rem;
+            vertical-align: middle;
             opacity: 0.9;
         }
 
@@ -92,12 +96,11 @@
         .table-wrapper {
             overflow-x: auto;
             margin-top: 20px;
-            /* This mimics the horizontal swipe behavior */
         }
 
         table {
             width: 100%;
-            min-width: 650px; /* Forces horizontal scroll */
+            min-width: 650px;
             border-collapse: separate;
             border-spacing: 0;
         }
@@ -107,7 +110,7 @@
             text-align: left;
             vertical-align: top;
             border-bottom: 1px solid var(--border-color);
-            white-space: nowrap; /* Prevents text wrap */
+            white-space: nowrap;
         }
         
         tr:last-child td {
@@ -117,32 +120,20 @@
         th {
             color: var(--text-light);
             font-weight: 600;
-            font-size: 0.9rem; /* 14.4px */
+            font-size: 0.9rem;
         }
 
         td {
-            font-size: 0.95rem; /* 15.2px */
+            font-size: 0.95rem;
             color: #222;
         }
         
-        /* Column-specific styles from screenshots */
-        td:nth-child(1) { /* # */
-            font-weight: 600;
-            color: var(--text-light);
-        }
-        td:nth-child(3) { /* Trans. ID */
-             color: var(--text-light);
-        }
-        td:nth-child(4) { /* Amount */
-            font-weight: 600;
-            color: #222;
-        }
-        td:nth-child(5) { /* Status */
-            color: var(--status-green);
-            font-weight: 600;
-        }
+        td:nth-child(1) { font-weight: 600; color: var(--text-light); }
+        td:nth-child(3) { color: var(--text-light); }
+        td:nth-child(4) { font-weight: 600; color: #222; }
+        td:nth-child(5) { color: var(--status-green); font-weight: 600; }
 
-        /* --- Action Buttons (with SVGs) --- */
+        /* --- Action Buttons (NEW STYLES) --- */
         .actions-cell {
             display: flex;
             flex-direction: column;
@@ -156,10 +147,10 @@
             background-color: var(--btn-blue);
             color: white;
             border: none;
-            border-radius: 20px; /* Pill shape */
+            border-radius: 10px; /* Rounded rectangle, not pill */
             padding: 8px 16px;
-            font-size: 0.9rem; /* 14.4px */
-            font-weight: 600;
+            font-size: 0.9rem;
+            font-weight: bold; /* Bolder text to match image */
             cursor: pointer;
             text-align: center;
             min-width: 90px;
@@ -167,25 +158,31 @@
         }
         
         .btn-action svg {
-            width: 1.1rem; /* 17.6px */
-            height: 1.1rem;
+            width: 1rem; /* 16px */
+            height: 1rem; /* 16px */
             margin-right: 6px;
-            fill: currentColor;
+            fill: none; /* Outlines only */
+            stroke: currentColor;
+            stroke-width: 2.5; /* Thicker lines to match image */
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            vertical-align: middle;
+        }
+        .btn-action span {
+             vertical-align: middle;
         }
 
         /* --- Footer --- */
         footer {
             text-align: center;
             padding: 25px 20px;
-            font-size: 0.8rem; /* 12.8px */
+            font-size: 0.8rem;
             color: #777;
             border-top: 1px solid #e0e0e0;
             margin-top: 20px;
         }
 
-        /* * --- MODAL (Transaction Details) ---
-         * Styled to match the video exactly.
-         */
+        /* --- MODAL (Transaction Details) --- */
         .modal {
             display: none; 
             position: fixed; 
@@ -206,11 +203,10 @@
             border-bottom: 1px solid var(--border-color);
         }
 
-        /* Back button styled to match video */
         .modal-back-btn {
             background-color: var(--btn-blue);
             color: white;
-            font-size: 1.5rem; /* 24px */
+            font-size: 1.5rem;
             font-weight: bold;
             padding: 4px 10px;
             border-radius: 6px;
@@ -219,21 +215,11 @@
             box-shadow: 0 1px 2px rgba(0,0,0,0.1);
         }
 
-        .modal-body {
-            padding: 0;
-        }
+        .modal-body { padding: 0; }
+        .modal-body h1 { padding: 20px 20px 12px 20px; }
+        .modal-body h2 { padding: 0 20px 15px 20px; }
         
-        .modal-body h1 {
-            padding: 20px 20px 12px 20px;
-        }
-        .modal-body h2 {
-            padding: 0 20px 15px 20px;
-        }
-        
-        /* Details Table from Video */
-        .details-table-wrapper {
-             overflow-x: auto;
-        }
+        .details-table-wrapper { overflow-x: auto; }
         .details-table {
             width: 100%;
             min-width: 500px;
@@ -248,21 +234,12 @@
             font-size: 0.9rem;
             vertical-align: top;
         }
-        .details-table th {
-            background-color: #f9f9f9;
-            font-weight: 600;
-            white-space: nowrap;
-        }
-        .details-table td:nth-child(5) { /* Amount */
-            font-weight: 600;
-        }
+        .details-table th { background-color: #f9f9f9; font-weight: 600; white-space: nowrap; }
+        .details-table td:nth-child(5) { font-weight: 600; }
 
-        /* Details List from Video */
-        .details-list {
-            padding: 20px;
-        }
+        .details-list { padding: 20px; }
         .detail-item {
-            background-color: #e6f7ff; /* Light blue */
+            background-color: #e6f7ff;
             border: 1px solid #b3e0ff;
             border-radius: 4px;
             padding: 12px 15px;
@@ -278,36 +255,36 @@
         }
         
         .detail-item.status-success {
-             background-color: #e8f5e9; /* Light green */
+             background-color: #e8f5e9;
              border-color: #c8e6c9;
              font-weight: 600;
              color: #2e7d32;
         }
-        .detail-item.status-success strong {
-            color: #1b5e20;
-        }
+        .detail-item.status-success strong { color: #1b5e20; }
     </style>
 </head>
 <body>
 
-    <!-- ======== HEADER ======== -->
     <header>
-        <div class="icons">
-            <span>&#9776;</span> <!-- Hamburger Icon -->
-        </div>
+        <div class="icons hamburger">
+            <span>&#9776;</span> </div>
         <div class="title">PU Online Payment Portal</div>
         <div class="icons">
-            <span>&#128100;</span> <!-- User Icon -->
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="6" cy="6" r="3"></circle>
+              <circle cx="6" cy="18" r="3"></circle>
+              <circle cx="18" cy="12" r="3"></circle>
+              <path d="M9 18c4-3 4-9 9-9"></path>
+              <path d="M9 6c4 3 4 9 9 9"></path>
+            </svg>
         </div>
     </header>
 
-    <!-- ======== MAIN CONTENT (Transaction Register) ======== -->
     <main>
         <div class="register-container">
             <h1>Transaction Register</h1>
             <h2>RITIKA: TRANSACTION REGISTER</h2>
 
-            <!-- This wrapper creates the horizontal scroll -->
             <div class="table-wrapper">
                 <table>
                     <thead>
@@ -321,57 +298,56 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <!-- 1. NEW Entry as requested -->
                         <tr>
                             <td>1.</td>
                             <td>08-Oct-2025</td>
-                            <td>560381</td> <!-- Changed ID -->
-                            <td>&#8377; 4140.00</td> <!-- New Amount -->
+                            <td>560381</td>
+                            <td>&#8377; 4140.00</td>
                             <td>Successful</td>
                             <td class="actions-cell">
                                 <button class="btn-action" id="view-new-entry">
-                                    <!-- View/Eye Icon -->
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                                        <path d="M10 12.5a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z" />
-                                        <path fill-rule="evenodd" d="M.664 10.59a1.651 1.651 0 0 1 0-1.18l.879-.88.878-.879.879-.878.878-.879.879-.878.878-.879.879-.878c.441-.441 1.043-.662 1.664-.662s1.223.221 1.664.662l.879.878.878.879.879.878.878.879.879.878.878.879.879.88c.441.441.662 1.043.662 1.664s-.221 1.223-.662 1.664l-.879.878-.878.879-.879.878-.878.879-.879.878-.878.879-.879.88c-.441.441-1.043.662-1.664.662s-1.223-.221-1.664-.662l-.879-.878-.878-.879-.879-.878-.878-.879-.879-.878-.878-.879-.879-.88a1.651 1.651 0 0 1 0-1.18ZM10 15a5 5 0 1 0 0-10 5 5 0 0 0 0 10Z" clip-rule="evenodd" />
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                        <circle cx="12" cy="12" r="3"></circle>
                                     </svg>
                                     <span>View</span>
                                 </button>
                                 <button class="btn-action" id="print-new-entry">
-                                    <!-- Print Icon -->
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                                        <path fill-rule="evenodd" d="M5 2.75C5 1.784 5.784 1 6.75 1h6.5c.966 0 1.75.784 1.75 1.75v3.5A.75.75 0 0 1 14.25 7h-8.5A.75.75 0 0 1 5 6.25v-3.5ZM6.5 2.5v3h7v-3a.25.25 0 0 0-.25-.25h-6.5a.25.25 0 0 0-.25.25ZM18.5 4.75a.75.75 0 0 0 0-1.5H16v.75c0 .69-.56 1.25-1.25 1.25h-5.5C8.56 5.25 8 4.69 8 4v-.75H1.5a.75.75 0 0 0 0 1.5h.063c.633.91 1.37 1.758 2.217 2.55S5.3 8.653 6 8.847V15.5a.75.75 0 0 0 .75.75h6.5a.75.75 0 0 0 .75-.75V8.847c.7-.194 1.38-.61 2.217-1.55S18.437 5.66 18.5 4.75ZM9.5 7.28c.553.27 1.18.47 1.846.603V15h-1.096V7.883c.29-.07.566-.18.846-.303Zm-1.5 0c.28.122.556.232.846.303V15H7.75V7.883c.666-.133 1.293-.334 1.846-.603Z" clip-rule="evenodd" />
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                        <polyline points="6 9 6 2 18 2 18 9"></polyline>
+                                        <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path>
+                                        <rect x="6" y="14" width="12" height="8"></rect>
                                     </svg>
                                     <span>Print</span>
                                 </button>
                             </td>
                         </tr>
 
-                        <!-- 2. Old Entry #1 (now #2) -->
                         <tr>
                             <td>2.</td>
                             <td>08-Oct-2025</td>
-                            <td>560373</td> <!-- Original ID -->
+                            <td>560373</td>
                             <td>&#8377; 4120.00</td>
                             <td>Successful</td>
                             <td class="actions-cell">
                                 <button class="btn-action" id="view-560373">
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                                        <path d="M10 12.5a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z" />
-                                        <path fill-rule="evenodd" d="M.664 10.59a1.651 1.651 0 0 1 0-1.18l.879-.88.878-.879.879-.878.878-.879.879-.878.878-.879.879-.878c.441-.441 1.043-.662 1.664-.662s1.223.221 1.664.662l.879.878.878.879.879.878.878.879.879.878.878.879.879.88c.441.441.662 1.043.662 1.664s-.221 1.223-.662 1.664l-.879.878-.878.879-.879.878-.878.879-.879.878-.878.879-.879.88c-.441.441-1.043.662-1.664.662s-1.223-.221-1.664-.662l-.879-.878-.878-.879-.879-.878-.878-.879-.879-.878-.878-.879-.879-.88a1.651 1.651 0 0 1 0-1.18ZM10 15a5 5 0 1 0 0-10 5 5 0 0 0 0 10Z" clip-rule="evenodd" />
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                        <circle cx="12" cy="12" r="3"></circle>
                                     </svg>
                                     <span>View</span>
                                 </button>
                                 <button class="btn-action" id="print-560373">
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                                        <path fill-rule="evenodd" d="M5 2.75C5 1.784 5.784 1 6.75 1h6.5c.966 0 1.75.784 1.75 1.75v3.5A.75.75 0 0 1 14.25 7h-8.5A.75.75 0 0 1 5 6.25v-3.5ZM6.5 2.5v3h7v-3a.25.25 0 0 0-.25-.25h-6.5a.25.25 0 0 0-.25.25ZM18.5 4.75a.75.75 0 0 0 0-1.5H16v.75c0 .69-.56 1.25-1.25 1.25h-5.5C8.56 5.25 8 4.69 8 4v-.75H1.5a.75.75 0 0 0 0 1.5h.063c.633.91 1.37 1.758 2.217 2.55S5.3 8.653 6 8.847V15.5a.75.75 0 0 0 .75.75h6.5a.75.75 0 0 0 .75-.75V8.847c.7-.194 1.38-.61 2.217-1.55S18.437 5.66 18.5 4.75ZM9.5 7.28c.553.27 1.18.47 1.846.603V15h-1.096V7.883c.29-.07.566-.18.846-.303Zm-1.5 0c.28.122.556.232.846.303V15H7.75V7.883c.666-.133 1.293-.334 1.846-.603Z" clip-rule="evenodd" />
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                        <polyline points="6 9 6 2 18 2 18 9"></polyline>
+                                        <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path>
+                                        <rect x="6" y="14" width="12" height="8"></rect>
                                     </svg>
                                     <span>Print</span>
                                 </button>
                             </td>
                         </tr>
 
-                        <!-- 3. Old Entry #2 (now #3) -->
                         <tr>
                             <td>3.</td>
                             <td>21-Aug-2025</td>
@@ -380,22 +356,23 @@
                             <td>Successful</td>
                             <td class="actions-cell">
                                 <button class="btn-action">
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                                        <path d="M10 12.5a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z" />
-                                        <path fill-rule="evenodd" d="M.664 10.59a1.651 1.651 0 0 1 0-1.18l.879-.88.878-.879.879-.878.878-.879.879-.878.878-.879.879-.878c.441-.441 1.043-.662 1.664-.662s1.223.221 1.664.662l.879.878.878.879.879.878.878.879.879.878.878.879.879.88c.441.441.662 1.043.662 1.664s-.221 1.223-.662 1.664l-.879.878-.878.879-.879.878-.878.879-.879.878-.878.879-.879.88c-.441.441-1.043.662-1.664.662s-1.223-.221-1.664-.662l-.879-.878-.878-.879-.879-.878-.878-.879-.879-.878-.878-.879-.879-.88a1.651 1.651 0 0 1 0-1.18ZM10 15a5 5 0 1 0 0-10 5 5 0 0 0 0 10Z" clip-rule="evenodd" />
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                        <circle cx="12" cy="12" r="3"></circle>
                                     </svg>
                                     <span>View</span>
                                 </button>
                                 <button class="btn-action">
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                                        <path fill-rule="evenodd" d="M5 2.75C5 1.784 5.784 1 6.75 1h6.5c.966 0 1.75.784 1.75 1.75v3.5A.75.75 0 0 1 14.25 7h-8.5A.75.75 0 0 1 5 6.25v-3.5ZM6.5 2.5v3h7v-3a.25.25 0 0 0-.25-.25h-6.5a.25.25 0 0 0-.25.25ZM18.5 4.75a.75.75 0 0 0 0-1.5H16v.75c0 .69-.56 1.25-1.25 1.25h-5.5C8.56 5.25 8 4.69 8 4v-.75H1.5a.75.75 0 0 0 0 1.5h.063c.633.91 1.37 1.758 2.217 2.55S5.3 8.653 6 8.847V15.5a.75.75 0 0 0 .75.75h6.5a.75.75 0 0 0 .75-.75V8.847c.7-.194 1.38-.61 2.217-1.55S18.437 5.66 18.5 4.75ZM9.5 7.28c.553.27 1.18.47 1.846.603V15h-1.096V7.883c.29-.07.566-.18.846-.303Zm-1.5 0c.28.122.556.232.846.303V15H7.75V7.883c.666-.133 1.293-.334 1.846-.603Z" clip-rule="evenodd" />
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                        <polyline points="6 9 6 2 18 2 18 9"></polyline>
+                                        <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path>
+                                        <rect x="6" y="14" width="12" height="8"></rect>
                                     </svg>
                                     <span>Print</span>
                                 </button>
                             </td>
                         </tr>
 
-                        <!-- 4. Old Entry #3 (now #4) -->
                         <tr>
                             <td>4.</td>
                             <td>24-Jul-2025</td>
@@ -404,22 +381,23 @@
                             <td>Successful</td>
                             <td class="actions-cell">
                                 <button class="btn-action">
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                                        <path d="M10 12.5a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z" />
-                                        <path fill-rule="evenodd" d="M.664 10.59a1.651 1.651 0 0 1 0-1.18l.879-.88.878-.879.879-.878.878-.879.879-.878.878-.879.879-.878c.441-.441 1.043-.662 1.664-.662s1.223.221 1.664.662l.879.878.878.879.879.878.878.879.879.878.878.879.879.88c.441.441.662 1.043.662 1.664s-.221 1.223-.662 1.664l-.879.878-.878.879-.879.878-.878.879-.879.878-.878.879-.879.88c-.441.441-1.043.662-1.664.662s-1.223-.221-1.664-.662l-.879-.878-.878-.879-.879-.878-.878-.879-.879-.878-.878-.879-.879-.88a1.651 1.651 0 0 1 0-1.18ZM10 15a5 5 0 1 0 0-10 5 5 0 0 0 0 10Z" clip-rule="evenodd" />
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                        <circle cx="12" cy="12" r="3"></circle>
                                     </svg>
                                     <span>View</span>
                                 </button>
                                 <button class="btn-action">
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                                        <path fill-rule="evenodd" d="M5 2.75C5 1.784 5.784 1 6.75 1h6.5c.966 0 1.75.784 1.75 1.75v3.5A.75.75 0 0 1 14.25 7h-8.5A.75.75 0 0 1 5 6.25v-3.5ZM6.5 2.5v3h7v-3a.25.25 0 0 0-.25-.25h-6.5a.25.25 0 0 0-.25.25ZM18.5 4.75a.75.75 0 0 0 0-1.5H16v.75c0 .69-.56 1.25-1.25 1.25h-5.5C8.56 5.25 8 4.69 8 4v-.75H1.5a.75.75 0 0 0 0 1.5h.063c.633.91 1.37 1.758 2.217 2.55S5.3 8.653 6 8.847V15.5a.75.75 0 0 0 .75.75h6.5a.75.75 0 0 0 .75-.75V8.847c.7-.194 1.38-.61 2.217-1.55S18.437 5.66 18.5 4.75ZM9.5 7.28c.553.27 1.18.47 1.846.603V15h-1.096V7.883c.29-.07.566-.18.846-.303Zm-1.5 0c.28.122.556.232.846.303V15H7.75V7.883c.666-.133 1.293-.334 1.846-.603Z" clip-rule="evenodd" />
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                        <polyline points="6 9 6 2 18 2 18 9"></polyline>
+                                        <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path>
+                                        <rect x="6" y="14" width="12" height="8"></rect>
                                     </svg>
                                     <span>Print</span>
                                 </button>
                             </td>
                         </tr>
                         
-                        <!-- 5. Old Entry #4 (now #5) - (had no print button) -->
                         <tr>
                             <td>5.</td>
                             <td>17-Jul-2025</td>
@@ -428,9 +406,9 @@
                             <td>Successful</td>
                             <td class="actions-cell">
                                 <button class="btn-action">
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                                        <path d="M10 12.5a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z" />
-                                        <path fill-rule="evenodd" d="M.664 10.59a1.651 1.651 0 0 1 0-1.18l.879-.88.878-.879.879-.878.878-.879.879-.878.878-.879.879-.878c.441-.441 1.043-.662 1.664-.662s1.223.221 1.664.662l.879.878.878.879.879.878.878.879.879.878.878.879.879.88c.441.441.662 1.043.662 1.664s-.221 1.223-.662 1.664l-.879.878-.878.879-.879.878-.878.879-.879.878-.878.879-.879.88c-.441.441-1.043.662-1.664.662s-1.223-.221-1.664-.662l-.879-.878-.878-.879-.879-.878-.878-.879-.879-.878-.878-.879-.879-.88a1.651 1.651 0 0 1 0-1.18ZM10 15a5 5 0 1 0 0-10 5 5 0 0 0 0 10Z" clip-rule="evenodd" />
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                        <circle cx="12" cy="12" r="3"></circle>
                                     </svg>
                                     <span>View</span>
                                 </button>
@@ -442,16 +420,13 @@
         </div>
     </main>
 
-    <!-- ======== FOOTER ======== -->
     <footer>
         &copy; 2025 Dr. A. P. J. Abdul Kalam Computer Centre,
         Panjab University. All rights reserved.
     </footer>
 
-    <!-- ======== MODAL (Details View for New Entry) ======== -->
     <div id="details-modal" class="modal">
         <div class="modal-header">
-            <!-- Back button icon from video -->
             <span class="modal-back-btn" id="modal-back-btn">&#8629;</span>
         </div>
         
@@ -475,9 +450,7 @@
                             <td>1</td>
                             <td>H0670</td>
                             <td>GIRLS HOSTEL NO.9 SECTRO-25, (AMRITA PRITAM) - HOSTEL RENT</td>
-                            <!-- As requested: October Rent -->
                             <td>Ritika, Room no. 602, October Rent</td>
-                            <!-- As requested: 4140.00 -->
                             <td>&#8377; 4140.00</td>
                         </tr>
                     </tbody>
@@ -487,15 +460,14 @@
             <div class="details-list">
                 <div class="detail-item">
                     <strong>Transaction ID:</strong>
-                    <span>560381</span> <!-- As requested -->
-                </div>
+                    <span>560381</span> </div>
                 <div class="detail-item">
                     <strong>Transaction Date:</strong>
-                    <span>08-Oct-2025</span> <!-- From video -->
+                    <span>08-Oct-2025</span>
                 </div>
                 <div class="detail-item">
                     <strong>Transaction Amount:</strong>
-                    <span>&#8377; 4140.00</span> <!-- As requested -->
+                    <span>&#8377; 4140.00</span>
                 </div>
                 <div class="detail-item status-success">
                     <strong>Online Payment Status:</strong>
@@ -509,27 +481,24 @@
     <script>
         // --- JavaScript for Modal and Print ---
 
-        // Get the modal elements
         const modal = document.getElementById('details-modal');
         const viewBtnNew = document.getElementById('view-new-entry');
         const backBtn = document.getElementById('modal-back-btn');
-
-        // Get the print buttons
         const printBtnNew = document.getElementById('print-new-entry');
         const printBtnOld = document.getElementById('print-560373');
 
-        // Show the modal when "View" on the NEW entry is clicked
+        // Show modal for new entry
         viewBtnNew.onclick = function() {
             modal.style.display = 'block';
-            window.scrollTo(0, 0); // Scroll to top
+            window.scrollTo(0, 0);
         }
 
-        // Hide the modal when "Back" is clicked
+        // Hide modal
         backBtn.onclick = function() {
             modal.style.display = 'none';
         }
         
-        // --- Print/Download Function ---
+        // Download function
         function downloadFile(href, downloadName) {
             const a = document.createElement('a');
             a.href = href;
@@ -539,24 +508,21 @@
             document.body.removeChild(a);
         }
 
-        // Handle the "Print" button for the NEW #1 entry
+        // Print button for NEW #1 entry
         printBtnNew.onclick = function() {
             downloadFile(
-                'PSlip-081025-560373.pdf',  // The only file we have
-                'PSlip-081025-560381.pdf'   // The NEW download name
+                'PSlip-081025-560373.pdf',
+                'PSlip-081025-560381.pdf' // New download name
             );
         }
 
-        // Handle the "Print" button for the #2 entry
+        // Print button for #2 entry
         printBtnOld.onclick = function() {
             downloadFile(
-                'PSlip-081025-560373.pdf',  // The file
-                'PSlip-081025-560373.pdf'   // The original download name
+                'PSlip-081025-560373.pdf',
+                'PSlip-081025-560373.pdf' // Original download name
             );
         }
-        
-        // Note: The other "View" and "Print" buttons will not do anything
-        // as no click handlers have been attached to them.
     </script>
 
 </body>
